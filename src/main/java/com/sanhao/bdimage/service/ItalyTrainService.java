@@ -6,9 +6,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.http.cookie.ClientCookie;
-import org.apache.http.impl.client.BasicCookieStore;
-import org.apache.http.cookie.Cookie;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.Header;
@@ -17,19 +15,23 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.CookieStore;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.protocol.HttpClientContext;
+import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 
 /**
  * 情感api
@@ -181,10 +183,14 @@ public class ItalyTrainService {
                             + entity.getContentLength());  
                     String content = EntityUtils.toString(entity);
                     // 打印响应内容  
-                    System.out.println("Response content: "  
-                           + content);  
+/*                    System.out.println("Response content: "  
+                           + content);  */
+                    Document doc = Jsoup.parse(content);
+                    //Elements links = doc.select("#travelSolution0");
                     
-                    FileUtils.writeStringToFile(new File("output.txt"), content,"utf-8");
+                    test3(doc);
+                    
+                   // FileUtils.writeStringToFile(new File("output.txt"), content,"utf-8");
                 }  
             }  
               
@@ -199,5 +205,31 @@ public class ItalyTrainService {
     }  
 	
 	
-	
+	public void test3(Document doc) {
+		Elements elems = doc.select(".solutionRow");
+
+		System.out.println(elems.size());
+		for (Element elem : elems) {
+			System.out.println(elem.text());
+
+			// System.out.println(elem.select("span.top.time").text());
+			// System.out.println(elem.select("span.bottom").text());
+
+			Elements subelems = elem.select("td");
+
+			System.out.println("Start : " + subelems.get(0).select("span.top.time").text());
+			System.out.println("Start : " + subelems.get(0).select("span.bottom").text());
+
+			System.out.println("Arrive : " + subelems.get(1).select("span.top.time").text());
+			System.out.println("Arrive : " + subelems.get(1).select("span.bottom").text());
+			
+			//*[@id="a_0"]/td[4]/div/div[1]/div[1]/text()
+			System.out.println("Dura : " + subelems.get(2).select(".descr").text());
+			System.out.println("Train : " +subelems.get(3).select(" div > div.col-xs-8.train > div.descr > img").attr("src"));
+			System.out.println("Train : " +subelems.get(3).select(" div > div.col-xs-8.train > div.descr").text());
+			System.out.println("Train : " + subelems.get(3).select("div > div.col-xs-8.train > div.descr > strong").text());
+
+		}
+
+	}
 }

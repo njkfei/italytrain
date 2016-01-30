@@ -43,6 +43,31 @@ public class ItalyTrainConfig {
 	@Value("http://www.trenord.it/en/timetable/default.aspx?aspxerrorpath=/en/timetable/timetable.aspx")
 	private String redirect_url;
 
+	@Value("Milano ( Tutte Le Stazioni )")
+	private String departureStation;
+	
+	@Value("Roma ( Tutte Le Stazioni )")
+	private String arrivalStation;
+	
+	@Value("30-01-2016")
+	private String departureDate;
+	
+	@Value("20")
+	private String departureTime;
+	
+	
+	@Value("3")
+	private String noOfAdults;
+	
+	@Value("1")
+	private String noOfChildren;
+	
+	@Value("tutti")
+	private String selectedTrainType;
+	
+	@Value("@null")
+	private String selectedTrainClassification;
+	
 	// 必须要有这一行，否则上面的＠VALUE无法注入
 	@Bean
 	public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
@@ -111,14 +136,14 @@ selectedTrainClassification:
 		nameValuePairs.add(new BasicNameValuePair("url_mobile:https", "https://www.lefrecce.it/msite/SearchExternal.do?parameter=initBaseSearch&lang=it"));
 		nameValuePairs.add(new BasicNameValuePair("tripType", "on"));
 		nameValuePairs.add(new BasicNameValuePair("isRoundTrip", "false"));
-		nameValuePairs.add(new BasicNameValuePair("departureStation", "Genova ( Tutte Le Stazioni )"));
-		nameValuePairs.add(new BasicNameValuePair("arrivalStation", "Roma ( Tutte Le Stazioni )"));		
-		nameValuePairs.add(new BasicNameValuePair("departureDate", "30-01-2016"));
-		nameValuePairs.add(new BasicNameValuePair("departureTime", "16"));
-		nameValuePairs.add(new BasicNameValuePair("noOfAdults", "1"));
-		nameValuePairs.add(new BasicNameValuePair("noOfChildren", "0"));
-		nameValuePairs.add(new BasicNameValuePair("selectedTrainType", "tutti"));
-		nameValuePairs.add(new BasicNameValuePair("selectedTrainClassification", null));
+		nameValuePairs.add(new BasicNameValuePair("departureStation",departureStation ));
+		nameValuePairs.add(new BasicNameValuePair("arrivalStation", arrivalStation));		
+		nameValuePairs.add(new BasicNameValuePair("departureDate",departureDate ));
+		nameValuePairs.add(new BasicNameValuePair("departureTime", departureTime));
+		nameValuePairs.add(new BasicNameValuePair("noOfAdults", noOfAdults));
+		nameValuePairs.add(new BasicNameValuePair("noOfChildren", noOfChildren));
+		nameValuePairs.add(new BasicNameValuePair("selectedTrainType", selectedTrainType));
+		nameValuePairs.add(new BasicNameValuePair("selectedTrainClassification", selectedTrainClassification));
 
 		UrlEncodedFormEntity entiry;
 		try {
